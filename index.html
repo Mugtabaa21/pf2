@@ -1297,6 +1297,28 @@ body.female-theme .lines-women {
   }
   /* subtleGlow removed for performance */
 
+  /* ── Mobile: disable all mode gate open animations ── */
+  @media (max-width: 768px) {
+    .mode-gate-eyebrow,
+    .mode-gate-title,
+    .mode-gate-sub {
+      animation: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+      letter-spacing: inherit;
+    }
+    .card-individual,
+    .card-couples {
+      animation: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+    .mode-gate.exiting {
+      opacity: 0;
+      transform: none;
+    }
+  }
+
   /* ── FEATURE 9: Split-screen couples column reveal ── */
   @keyframes slideFromLeft {
     0%   { opacity: 0; transform: translateX(-40px); }
