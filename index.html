@@ -1841,13 +1841,11 @@ body.female-theme .lines-women {
       left: 0;
       right: 0;
       z-index: 95;
-      background: rgba(10,10,10,0.97);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
+      background: #0d0d0d;
       padding: 0.6rem 1.2rem;
       margin-bottom: 0;
       border-bottom: 1px solid rgba(255,255,255,0.08);
-      box-shadow: 0 2px 16px rgba(0,0,0,0.5);
+      box-shadow: 0 2px 16px rgba(0,0,0,0.7);
     }
     .cp-progress-placeholder {
       display: none;
@@ -3651,34 +3649,67 @@ choosePath = function(path) {
 window.addEventListener('scroll', updateProgressTracker, { passive: true });
 updateProgressTracker();
 
+
 // ── COUPLES PROGRESS BAR — fixed on mobile when scrolled past ──────────────
 (function() {
   var bar = document.getElementById('cpProgress');
   var placeholder = document.getElementById('cpProgressPlaceholder');
+  var barOriginalTop = null;
+
+  function getScrollY() {
+    return window.pageYOffset
+      || document.documentElement.scrollTop
+      || document.body.scrollTop
+      || 0;
+  }
+
+  function cacheBarTop() {
+    if (barOriginalTop === null && bar && !bar.classList.contains('cp-fixed')) {
+      var rect = bar.getBoundingClientRect();
+      barOriginalTop = rect.top + getScrollY();
+    }
+  }
 
   function updateCpBarFixed() {
     if (!bar || !placeholder) return;
     if (window.innerWidth > 600) {
       bar.classList.remove('cp-fixed');
       placeholder.classList.remove('visible');
+      barOriginalTop = null;
       return;
     }
-    var rect = placeholder.classList.contains('visible')
-      ? placeholder.getBoundingClientRect()
-      : bar.getBoundingClientRect();
 
-    if (!placeholder.classList.contains('visible') && bar.getBoundingClientRect().top <= 0) {
-      placeholder.style.height = bar.offsetHeight + 'px';
-      bar.classList.add('cp-fixed');
-      placeholder.classList.add('visible');
-    } else if (placeholder.classList.contains('visible') && placeholder.getBoundingClientRect().top > 0) {
-      bar.classList.remove('cp-fixed');
-      placeholder.classList.remove('visible');
+    cacheBarTop();
+    if (barOriginalTop === null) return;
+
+    var scrollY = getScrollY();
+
+    if (scrollY >= barOriginalTop) {
+      if (!bar.classList.contains('cp-fixed')) {
+        placeholder.style.height = bar.offsetHeight + 'px';
+        placeholder.classList.add('visible');
+        bar.classList.add('cp-fixed');
+      }
+    } else {
+      if (bar.classList.contains('cp-fixed')) {
+        bar.classList.remove('cp-fixed');
+        placeholder.classList.remove('visible');
+      }
     }
   }
 
-  window.addEventListener('scroll', updateCpBarFixed, { passive: true });
-  window.addEventListener('resize', updateCpBarFixed, { passive: true });
+  // Listen on window, document, and body for maximum WebView compatibility
+  ['scroll', 'touchmove'].forEach(function(evt) {
+    window.addEventListener(evt, updateCpBarFixed, { passive: true });
+    document.addEventListener(evt, updateCpBarFixed, { passive: true });
+  });
+  window.addEventListener('resize', function() {
+    barOriginalTop = null;
+    updateCpBarFixed();
+  }, { passive: true });
+
+  // Poll as fallback for WebViews that don't fire scroll on window
+  setInterval(updateCpBarFixed, 100);
 })();
 </script>
 </body>
