@@ -3330,6 +3330,7 @@ function cpRenderGrid(containerId, perfumes, selectedArr, type) {
     const card = document.createElement('div');
     const selClass = count > 0 ? (type === 'man' ? ' cp-selected-man' : ' cp-selected-woman') : '';
     card.className = 'couples-perf-card' + selClass + (isFull ? ' cp-disabled' : '');
+    card.dataset.id = p.id;
 
     // X remove button (only shown when selected)
     const removeBtn = count > 0
@@ -3372,37 +3373,44 @@ function cpRemoveOne(id, type) {
   cpUpdateWomanSuggestions();
 }
 
-// Pairing map: man perfume id → woman perfume ids that complement it
+// Pairing map: man perfume id → ONE woman perfume that complements it best
 const cpCrossPairings = {
-  1:  [101, 105],  // ورد طائف → زهر الربيع، وردة باريس
-  2:  [106, 103],  // عود الليل → فانيلا كريمي، ياسمين الليل
-  3:  [104, 107],  // نسيم البحر → نسيم الخوخ، باقة الربيع
-  4:  [104, 107],  // حمضيات الصباح → نسيم الخوخ، باقة الربيع
-  5:  [103, 101],  // خشب السدر → ياسمين الليل، زهر الربيع
-  6:  [106, 102],  // المسك الأبيض → فانيلا كريمي، حلوى الفراولة
-  7:  [101, 105],  // العنبر الذهبي → زهر الربيع، وردة باريس
+  'cm1': 'cw1',   // ورد طائف → زهر الربيع
+  'cm2': 'cw3',   // عود الليل → ياسمين الليل
+  'cm3': 'cw4',   // نسيم البحر → نسيم الخوخ
+  'cm4': 'cw7',   // حمضيات الصباح → باقة الربيع
+  'cm5': 'cw6',   // خشب السدر → فانيلا كريمي
+  'cm6': 'cw2',   // المسك الأبيض → حلوى الفراولة
+  'cm7': 'cw5',   // العنبر الذهبي → وردة باريس
 };
 
 let _cpWomanSuggested = []; // suggested woman IDs based on man picks
 
 function cpUpdateWomanSuggestions() {
-  // Clear previous suggestions
+  // Clear all existing suggestions
   document.querySelectorAll('.couples-perf-card.cp-paired-suggest').forEach(c => c.classList.remove('cp-paired-suggest'));
   _cpWomanSuggested = [];
-  if (cpManSelected.length !== 2) return;
 
-  // Gather suggestions from both man picks, excluding already-selected woman perfumes
+  // Need at least 1 man selected to suggest
+  if (cpManSelected.length === 0) return;
+  // Woman column full — no suggestions needed
+  if (cpWomanSelected.length >= 2) return;
+
+  // Each selected man perfume suggests exactly ONE woman perfume (1:1 pairing).
+  // Only show suggestions for man perfumes whose pair isn't already selected.
   let candidates = [];
   cpManSelected.forEach(id => {
-    const pairs = (cpCrossPairings[id] || []).filter(pid => !cpWomanSelected.includes(pid));
-    pairs.forEach(pid => { if (!candidates.includes(pid)) candidates.push(pid); });
+    const pair = cpCrossPairings[id]; // single string, e.g. 'cw3'
+    if (pair && !cpWomanSelected.includes(pair) && !candidates.includes(pair)) {
+      candidates.push(pair);
+    }
   });
 
-  _cpWomanSuggested = candidates.slice(0, 2);
+  _cpWomanSuggested = candidates;
 
-  // Apply suggestion highlight on woman grid cards
+  // Apply highlight on woman grid cards
   _cpWomanSuggested.forEach(pid => {
-    const card = document.querySelector(`#cpWomanGrid [data-id="${pid}"]`);
+    const card = document.querySelector('#cpWomanGrid [data-id="' + pid + '"]');
     if (card) card.classList.add('cp-paired-suggest');
   });
 }
