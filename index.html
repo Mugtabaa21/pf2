@@ -1835,18 +1835,27 @@ body.female-theme .lines-women {
   .cp-prog-step.active .cp-prog-label { color: var(--gold); }
 
   @media (max-width: 600px) {
-    .couples-progress {
-      position: sticky;
-      top: 60px;
-      z-index: 80;
-      background: rgba(10,10,10,0.95);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      padding: 0.75rem 1rem;
+    .couples-progress.cp-fixed {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 95;
+      background: rgba(10,10,10,0.97);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding: 0.6rem 1.2rem;
+      margin-bottom: 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 2px 16px rgba(0,0,0,0.5);
+    }
+    .cp-progress-placeholder {
+      display: none;
+      height: 56px;
       margin-bottom: 1.5rem;
-      margin-left: -1.2rem;
-      margin-right: -1.2rem;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .cp-progress-placeholder.visible {
+      display: block;
     }
   }
 
@@ -2250,6 +2259,7 @@ body.female-theme .lines-women {
         <span class="cp-prog-label">تأكيد</span>
       </div>
     </div>
+    <div class="cp-progress-placeholder" id="cpProgressPlaceholder"></div>
 
     <!-- Two-column perfume picker -->
     <div class="couples-layout">
@@ -3441,6 +3451,7 @@ function showSections(ids) {
 function applyModeUI(mode) {
   const hero = document.querySelector('.hero');
   const howtoLabel = document.getElementById('howtoLabel');
+  const nav = document.querySelector('nav');
 
   if (mode === 'individual') {
     hideSections(couplesSectionIds);
@@ -3448,10 +3459,14 @@ function applyModeUI(mode) {
     if (hero) hero.style.display = '';
     document.querySelector('.gender-selector').style.display = 'flex';
     if (howtoLabel) howtoLabel.textContent = 'كيف تستخدم الموقع؟';
+    // Restore nav to sticky
+    if (nav) { nav.style.display = ''; nav.style.position = ''; }
   } else {
     hideSections(individualSections);
     showSections(couplesSectionIds);
     if (hero) hero.style.display = 'none';
+    // On mobile, make nav static (not sticky) so progress bar can own the top when scrolled
+    if (nav && window.innerWidth <= 600) nav.style.position = 'static';
   }
   // Show switch button in nav
   const btn = document.getElementById('switchModeBtn');
@@ -3635,6 +3650,36 @@ choosePath = function(path) {
 
 window.addEventListener('scroll', updateProgressTracker, { passive: true });
 updateProgressTracker();
+
+// ── COUPLES PROGRESS BAR — fixed on mobile when scrolled past ──────────────
+(function() {
+  var bar = document.getElementById('cpProgress');
+  var placeholder = document.getElementById('cpProgressPlaceholder');
+
+  function updateCpBarFixed() {
+    if (!bar || !placeholder) return;
+    if (window.innerWidth > 600) {
+      bar.classList.remove('cp-fixed');
+      placeholder.classList.remove('visible');
+      return;
+    }
+    var rect = placeholder.classList.contains('visible')
+      ? placeholder.getBoundingClientRect()
+      : bar.getBoundingClientRect();
+
+    if (!placeholder.classList.contains('visible') && bar.getBoundingClientRect().top <= 0) {
+      placeholder.style.height = bar.offsetHeight + 'px';
+      bar.classList.add('cp-fixed');
+      placeholder.classList.add('visible');
+    } else if (placeholder.classList.contains('visible') && placeholder.getBoundingClientRect().top > 0) {
+      bar.classList.remove('cp-fixed');
+      placeholder.classList.remove('visible');
+    }
+  }
+
+  window.addEventListener('scroll', updateCpBarFixed, { passive: true });
+  window.addEventListener('resize', updateCpBarFixed, { passive: true });
+})();
 </script>
 </body>
 </html>
