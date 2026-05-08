@@ -2326,12 +2326,12 @@ body.female-theme .lines-women {
   <div id="subscribeForm">
     <div class="form-group">
       <label>الاسم الكامل</label>
-      <input type="text" id="nameInput" placeholder="مجتبى رفعت" oninput="clearNameError()" />
+      <input type="text" id="nameInput" placeholder="مجتبى رفعت" oninput="clearNameError(); updateProgressTracker()" />
       <span id="nameError" style="display:none; color:var(--gold); font-size:0.8rem; margin-top:0.4rem;">⚠ يرجى إدخال الاسم الكامل</span>
     </div>
     <div class="form-group">
       <label>رقم الجوال</label>
-      <input type="tel" id="phoneInput" placeholder="077xxxxxxxx" oninput="clearPhoneError()" />
+      <input type="tel" id="phoneInput" placeholder="077xxxxxxxx" oninput="clearPhoneError(); updateProgressTracker()" />
       <span id="phoneError" style="display:none; color:var(--gold); font-size:0.8rem; margin-top:0.4rem;">⚠ رقم الجوال يجب أن يكون ١١ رقماً</span>
     </div>
     <div class="form-group">
@@ -2457,17 +2457,17 @@ body.female-theme .lines-women {
     <div class="couples-form" id="cpForm" style="display:none;">
       <div class="form-group">
         <label>اسم الزوج</label>
-        <input type="text" id="cpHusbandName" placeholder="مجتبى رفعت" oninput="cpClearError('cpNameErr')">
+        <input type="text" id="cpHusbandName" placeholder="مجتبى رفعت" oninput="cpClearError('cpNameErr'); cpUpdateUI()">
         <span id="cpNameErr" style="display:none;color:var(--gold);font-size:0.8rem;margin-top:0.3rem;">⚠ أدخل اسم الزوج</span>
       </div>
       <div class="form-group">
         <label>اسم الزوجة</label>
-        <input type="text" id="cpWifeName" placeholder="فاطمة زينب" oninput="cpClearError('cpWifeErr')">
+        <input type="text" id="cpWifeName" placeholder="فاطمة زينب" oninput="cpClearError('cpWifeErr'); cpUpdateUI()">
         <span id="cpWifeErr" style="display:none;color:var(--gold);font-size:0.8rem;margin-top:0.3rem;">⚠ أدخل اسم الزوجة</span>
       </div>
       <div class="form-group">
         <label>رقم الهاتف</label>
-        <input type="tel" id="cpPhone" placeholder="07XXXXXXXXX" oninput="cpClearError('cpPhoneErr')">
+        <input type="tel" id="cpPhone" placeholder="07XXXXXXXXX" oninput="cpClearError('cpPhoneErr'); cpUpdateUI()">
         <span id="cpPhoneErr" style="display:none;color:var(--gold);font-size:0.8rem;margin-top:0.3rem;">⚠ أدخل رقم هاتف صحيح (١١ رقماً)</span>
       </div>
       <div class="form-group">
@@ -3218,6 +3218,7 @@ function getLocation() {
       status.style.color = 'var(--gold)';
       status.textContent = '✦ سيتم إرسال رابط Waze مع طلبك';
       document.getElementById('locError').style.display = 'none';
+      updateProgressTracker();
     },
     (err) => {
       buyerCoords = null;
@@ -3503,6 +3504,10 @@ function cpUpdateUI() {
 
   // Progress dots
   const womanDone = cpWomanSelected.length === 2;
+  const _cpHusbandFilled = (document.getElementById('cpHusbandName')?.value.trim().length || 0) > 0;
+  const _cpWifeFilled = (document.getElementById('cpWifeName')?.value.trim().length || 0) > 0;
+  const _cpPhoneFilled = (document.getElementById('cpPhone')?.value.trim() || '').replace(/\D/g,'').length === 11;
+  const cpFormFilled = allChosen && _cpHusbandFilled && _cpWifeFilled && _cpPhoneFilled && cpCoords !== null;
   const formDone = document.getElementById('cpSuccessMsg').classList.contains('show');
 
   const d0 = document.getElementById('cpDot0');
@@ -3519,10 +3524,10 @@ function cpUpdateUI() {
   d1.className = 'cp-prog-dot ' + (womanDone ? 'done' : manDone ? 'active' : '');
   d1.textContent = womanDone ? '✓' : '٢';
   l1.className = 'cp-prog-line ' + (womanDone ? 'filled' : '');
-  d2.className = 'cp-prog-dot ' + (formDone ? 'done' : allChosen ? 'active' : '');
-  d2.textContent = formDone ? '✓' : '٣';
-  l2.className = 'cp-prog-line ' + (formDone ? 'filled' : '');
-  d3.className = 'cp-prog-dot ' + (formDone ? 'done' : '');
+  d2.className = 'cp-prog-dot ' + (cpFormFilled ? 'done' : allChosen ? 'active' : '');
+  d2.textContent = cpFormFilled ? '✓' : '٣';
+  l2.className = 'cp-prog-line ' + (cpFormFilled ? 'filled' : '');
+  d3.className = 'cp-prog-dot ' + (formDone ? 'done' : cpFormFilled ? 'active' : '');
   d3.textContent = formDone ? '✓' : '٤';
 }
 
@@ -3567,6 +3572,7 @@ function cpGetLocation() {
       status.style.color = 'var(--gold)';
       status.textContent = '✦ سيتم إرسال رابط Waze مع طلبك';
       document.getElementById('cpLocErr').style.display = 'none';
+      cpUpdateUI();
     },
     (err) => {
       cpCoords = null;
@@ -3832,8 +3838,12 @@ function updateProgressTracker() {
   const step1Done = step0Done && gridUnlocked;
   // Step 2: 3 perfumes selected
   const step2Done = step1Done && selected.length === 3;
-  // Step 3: form submitted
-  const step3Done = document.getElementById('successMsg')?.classList.contains('show');
+  // Step 3: all form fields filled (name + phone + location)
+  const _nameFilled = (document.getElementById('nameInput')?.value.trim().length || 0) > 0;
+  const _phoneFilled = (document.getElementById('phoneInput')?.value.trim() || '').replace(/\D/g,'').length === 11;
+  const step3Done = step2Done && _nameFilled && _phoneFilled && buyerCoords !== null;
+  // Step 4: buy button pressed (success shown)
+  const step4Done = document.getElementById('successMsg')?.classList.contains('show');
 
   // — Floating dot tracker —
   pt0.className = 'pt-step' + (step0Done ? ' done' : ' active');
@@ -3842,7 +3852,7 @@ function updateProgressTracker() {
   ptLine1.className = 'pt-line' + (step1Done ? ' filled' : '');
   pt2.className = 'pt-step' + (step2Done ? ' done' : step1Done ? ' active' : '');
   ptLine2.className = 'pt-line' + (step2Done ? ' filled' : '');
-  pt3.className = 'pt-step' + (step3Done ? ' done' : step2Done ? ' active' : '');
+  pt3.className = 'pt-step' + (step4Done ? ' done' : step3Done ? ' done' : step2Done ? ' active' : '');
 
   // Show tracker after gender chosen OR scrolled past gender selector
   const genderEl = document.querySelector('.gender-selector');
