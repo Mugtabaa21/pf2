@@ -2103,7 +2103,7 @@ body.female-theme .lines-women {
       <span class="pt-num">١</span>
       <span class="pt-check">✓</span>
     </div>
-    <span class="pt-label">اختر جنسك</span>
+    <span class="pt-label" id="ptLabel0">نوع العطور</span>
   </div>
   <div class="pt-line" id="ptLine0"></div>
   <div class="pt-step" id="pt1">
@@ -2111,7 +2111,7 @@ body.female-theme .lines-women {
       <span class="pt-num">٢</span>
       <span class="pt-check">✓</span>
     </div>
-    <span class="pt-label">اختر طريقتك</span>
+    <span class="pt-label" id="ptLabel1">اختر طريقتك</span>
   </div>
   <div class="pt-line" id="ptLine1"></div>
   <div class="pt-step" id="pt2">
@@ -2119,7 +2119,7 @@ body.female-theme .lines-women {
       <span class="pt-num">٣</span>
       <span class="pt-check">✓</span>
     </div>
-    <span class="pt-label">اختر العطور</span>
+    <span class="pt-label" id="ptLabel2">اختر العطور</span>
   </div>
   <div class="pt-line" id="ptLine2"></div>
   <div class="pt-step" id="pt3">
@@ -2127,7 +2127,7 @@ body.female-theme .lines-women {
       <span class="pt-num">٤</span>
       <span class="pt-check">✓</span>
     </div>
-    <span class="pt-label">بياناتك</span>
+    <span class="pt-label" id="ptLabel3">بياناتك</span>
   </div>
 </div>
 
@@ -2213,8 +2213,8 @@ body.female-theme .lines-women {
 
     <!-- GENDER SELECTOR IN HERO -->
     <div class="gender-selector" style="margin-top:2rem;">
-      <button class="gender-btn" id="genderMale" onclick="setGender('male')">👨 رجالي</button>
-      <button class="gender-btn" id="genderFemale" onclick="setGender('female')">👩 نسائي</button>
+      <button class="gender-btn" id="genderMale" onclick="setGender('male')">👔 عطور رجالية</button>
+      <button class="gender-btn" id="genderFemale" onclick="setGender('female')">💐 عطور نسائية</button>
     </div>
   </div>
 </section>
@@ -2282,7 +2282,6 @@ body.female-theme .lines-women {
         </div>
         <button class="quiz-reset-btn" onclick="resetQuiz()">أعد الاختبار</button>
       </div>
-      <div class="quiz-result-cards" id="quizResultCards"></div>
     </div>
 
     <!-- LOCK BANNER — shown when grid is locked -->
@@ -2363,9 +2362,9 @@ body.female-theme .lines-women {
   <div class="couples-inner">
 
     <div class="couples-badge">💑 اشتراك الأزواج</div>
-    <h2 class="couples-title" style="display:flex;flex-direction:column;gap:0.3em;">رائحتان<em>قصة واحدة</em></h2>
+    <h2 class="couples-title" style="display:flex;flex-direction:column;gap:0.3em;">عطران<em>قصة واحدة</em></h2>
     <p class="couples-subtitle">
-      اشتراك خاص للأزواج والمتزوجين — اختر ٢ عطور رجالية و٢ عطور نسائية من ١٤ خياراً متاحاً (٧ رجالية + ٧ نسائية). كل شهر، رائحة جديدة لكليكما.
+      اشتراك خاص للأزواج والمتزوجين — اختر ٢ عطور رجالية و٢ عطور نسائية من ١٤ خياراً متاحاً (٧ رجالية + ٧ نسائية). كل شهر، عطر جديد لكليكما.
     </p>
 
     <!-- Progress indicator -->
@@ -2607,7 +2606,7 @@ const quizQuestionsWomen = [
     ]
   },
   {
-    text: 'أي رائحة تجذبك أكثر؟',
+    text: 'أي عطر يجذبك أكثر؟',
     options: [
       { label: '🌸 زهور وياسمين',      scores: { 101:2, 103:2, 105:1 } },
       { label: '🍓 فواكه وحلويات',     scores: { 102:2, 106:1, 104:1 } },
@@ -2794,26 +2793,12 @@ function showQuizResult() {
     if (card) card.classList.add('recommended');
   });
 
-  // Build result cards
-  const cardsHTML = suggestions.map(id => {
-    const p = perfumes.find(x => x.id === id);
-    if (!p) return '';
-    return `
-      <div class="quiz-result-card">
-        <div class="quiz-result-card-badge">✦ مقترح</div>
-        <div class="quiz-result-card-icon">${p.icon}</div>
-        <div class="quiz-result-card-name">${p.name}</div>
-        <div class="quiz-result-card-note">${p.note}</div>
-      </div>`;
-  }).join('');
-
   if (allDontKnow) {
     document.getElementById('quizResultSubtitle').textContent = isFemale ? 'خفيفة وأنثوية ومحبوبة — يمكنكِ اختيار أي عطر تشائين' : 'سهلة وخفيفة ومقبولة في كل المناسبات — يمكنك اختيار أي عطر تشاء';
   } else {
     document.getElementById('quizResultTitle').textContent = isFemale ? '✦ عطورك المقترحة' : '✦ عطورك المقترحة';
     document.getElementById('quizResultSubtitle').textContent = isFemale ? 'بناءً على إجاباتك — لكن يمكنكِ اختيار أي عطر تشائين' : 'بناءً على إجاباتك — لكن يمكنك اختيار أي عطر تشاء';
   }
-  document.getElementById('quizResultCards').innerHTML = cardsHTML;
   document.getElementById('quizResultBanner').style.display = 'block';
   document.getElementById('quizBar').style.width = '100%';
   document.getElementById('quizCard').innerHTML = '';
@@ -2959,19 +2944,27 @@ function refreshPairingSuggestions() {
   if (selected.length === 0) return;
   if (selected.length >= 3) return;
 
-  // Collect already-selected IDs
   const selectedIds = selected.map(s => s.perfumeId);
+  const slotsLeft = 3 - selected.length;
 
-  // Get all suggested pairs from all remaining selected perfumes, excluding already selected
-  let candidates = [];
+  // Score every non-selected perfume by how many of the currently selected perfumes pair with it.
+  // A perfume that pairs well with 2 of your picks scores 2 and ranks above one pairing with only 1.
+  const scores = {};
   selectedIds.forEach(id => {
-    const pairs = (perfumePairings[id] || []).filter(pid => !selectedIds.includes(pid));
-    pairs.forEach(pid => { if (!candidates.includes(pid)) candidates.push(pid); });
+    (perfumePairings[id] || []).forEach(pid => {
+      if (!selectedIds.includes(pid)) {
+        scores[pid] = (scores[pid] || 0) + 1;
+      }
+    });
   });
 
-  // 1 slot left → suggest 1 best, 2 slots left → suggest 2
-  const slotsLeft = 3 - selected.length;
-  const toShow = candidates.slice(0, slotsLeft === 1 ? 1 : 2);
+  // Sort candidates by score descending, then by id for stable ordering
+  const ranked = Object.keys(scores)
+    .map(pid => ({ pid: Number(pid), score: scores[pid] }))
+    .sort((a, b) => b.score - a.score || a.pid - b.pid);
+
+  // Show suggestions equal to slots remaining, max 2
+  const toShow = ranked.slice(0, Math.min(slotsLeft, 2)).map(x => x.pid);
   _pairingSuggested = toShow;
   if (selectedIds.length === 1) _pairingFirstId = selectedIds[0];
   applyPairingSuggestions(toShow);
@@ -3096,7 +3089,7 @@ if (heroH1) {
 
   // Update progress tracker labels
   const ptLabel0 = document.getElementById('ptLabel0');
-  if (ptLabel0) ptLabel0.textContent = isFemale ? 'اختاري جنسك' : 'اختر جنسك';
+  if (ptLabel0) ptLabel0.textContent = 'نوع العطور';
   const ptLabel1 = document.getElementById('ptLabel1');
   if (ptLabel1) ptLabel1.textContent = isFemale ? 'اعرفي ذوقك' : 'اعرف ذوقك';
   const ptLabel2 = document.getElementById('ptLabel2');
