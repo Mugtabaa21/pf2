@@ -626,7 +626,7 @@
   }
   .perfume-card:hover .perfume-desc,
   .perfume-card.selected .perfume-desc {
-    display: block;
+    display: none;
   }
 
   .selection-status {
@@ -1888,46 +1888,46 @@ body.female-theme .lines-women {
   /* Couples perfume picker */
   .couples-perfume-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.6rem;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 1rem;
   }
   .couples-perf-card {
-    background: rgba(25,25,25,0.5);
-    border: 1px solid rgba(255,255,255,0.07);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    padding: 0.9rem 0.6rem;
+    will-change: transform;
+    background: rgba(30,30,30,0.55);
+    border: 1px solid rgba(255,255,255,0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 1.5rem 1rem;
     text-align: center;
     cursor: pointer;
-    transition: all 0.28s cubic-bezier(0.34,1.56,0.64,1);
+    transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
     position: relative;
     user-select: none;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.05);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.06);
   }
   .couples-perf-card:hover {
-    border-color: rgba(255,255,255,0.2);
-    transform: translateY(-3px) scale(1.03);
-    box-shadow: 0 8px 28px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.08);
-    background: rgba(38,38,38,0.65);
+    border-color: rgba(255,255,255,0.22);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+    background: rgba(40,40,40,0.7);
   }
   .couples-perf-card.cp-selected-man {
     border-color: #C0272D;
     background: rgba(192,39,45,0.12);
-    box-shadow: 0 0 0 1px #C0272D, 0 6px 24px rgba(192,39,45,0.2), inset 0 1px 0 rgba(255,255,255,0.06);
+    box-shadow: 0 0 0 1px #C0272D, 0 8px 32px rgba(192,39,45,0.2), inset 0 1px 0 rgba(255,255,255,0.08);
   }
   .couples-perf-card.cp-selected-woman {
     border-color: #E75480;
     background: rgba(231,84,128,0.12);
-    box-shadow: 0 0 0 1px #E75480, 0 6px 24px rgba(231,84,128,0.2), inset 0 1px 0 rgba(255,255,255,0.06);
+    box-shadow: 0 0 0 1px #E75480, 0 8px 32px rgba(231,84,128,0.2), inset 0 1px 0 rgba(255,255,255,0.08);
   }
   .couples-perf-card.cp-disabled {
     opacity: 0.25;
     cursor: not-allowed;
     transform: none;
   }
-  .cp-icon { font-size: 1.6rem; display: block; margin-bottom: 0.4rem; }
-  .cp-name { font-size: 0.72rem; font-weight: 700; color: var(--cream); margin-bottom: 0.15rem; }
-  .cp-note { font-size: 0.62rem; color: var(--text-muted); }
+  /* Description always hidden on couples cards */
+  .couples-perf-card .perfume-desc { display: none !important; }
+  .cp-icon { font-size: 2.5rem; display: block; margin-bottom: 0.8rem; }
   .cp-badge {
     position: absolute;
     top: -1px; right: -1px;
@@ -2215,7 +2215,7 @@ body.female-theme .lines-women {
     .couples-title { font-size: clamp(1.5rem, 6vw, 2.4rem); }
     .couples-subtitle { font-size: 0.88rem; }
     .couples-layout { grid-template-columns: 1fr; gap: 1rem; }
-    .couples-perfume-grid { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
+    .couples-perfume-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 0.7rem; }
     .couples-col { padding: 1.2rem; }
     .couples-form { margin-bottom: 1rem; }
 
@@ -3190,22 +3190,9 @@ function updateTextByGender(g) {
 const heroH1 = document.querySelector('h1');
 
 if (heroH1) {
-  const baseText = isFemale ? 'اتركي بصمتك ' : 'اترك بصمتك ';
-  heroH1.textContent = ''; 
-
-  // 1. Create the first part (White + Tilted)
-  const mainSpan = document.createElement('em');
-  mainSpan.textContent = baseText;
-  mainSpan.style.color = 'white'; // Sets the first two words to white
-  
-  // 2. Create the third word (Tilted)
-  const emSpan = document.createElement('em');
-  emSpan.textContent = 'المميزة';
-  // Note: This will use the default H1 color unless you specify otherwise
-
-  // 3. Append to the H1
-  heroH1.appendChild(mainSpan);
-  heroH1.appendChild(emSpan);
+  heroH1.innerHTML = isFemale
+    ? 'اتركي بصمتك <em>المميزة</em>'
+    : 'اترك بصمتك <em>المميزة</em>';
 }
   
   const heroDesc = document.querySelector('.hero-desc');
@@ -3560,12 +3547,12 @@ function cpRenderGrid(containerId, perfumes, selectedArr, type) {
     card.innerHTML = `
       ${removeBtn}
       ${p.img
-        ? `<img src="${p.img}" alt="${p.name}" style="width:55px;height:55px;object-fit:contain;display:block;margin:0 auto 0.4rem;border-radius:6px;">`
-        : `<span class="cp-icon">${p.icon}</span>`}
-      <div class="cp-name">${p.name}</div>
-      ${p.brand ? `<div class="cp-brand">${p.brand}</div>` : ''}
-      <div class="cp-note">${p.note}</div>
-      ${p.description ? `<div class="cp-desc">${p.description}</div>` : ''}
+        ? `<img src="${p.img}" alt="${p.name}" style="width:70px;height:70px;object-fit:contain;margin:0 auto 0.8rem;display:block;border-radius:8px;">`
+        : `<span class="perfume-icon">${p.icon}</span>`}
+      <div class="perfume-name">${p.name}</div>
+      ${p.brand ? `<div class="perfume-brand">${p.brand}</div>` : ''}
+      <div class="perfume-note">${p.note}</div>
+      ${p.description ? `<div class="perfume-desc">${p.description}</div>` : ''}
       <span class="cp-badge">${count === 2 ? '٢' : '✓'}</span>
     `;
 
