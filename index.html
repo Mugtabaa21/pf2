@@ -605,6 +605,30 @@
     color: var(--text-muted);
   }
 
+  .perfume-brand {
+    font-size: 0.62rem;
+    color: var(--gold);
+    letter-spacing: 0.03em;
+    margin-bottom: 0.2rem;
+    font-weight: 600;
+    opacity: 0.85;
+  }
+
+  .perfume-desc {
+    font-size: 0.67rem;
+    color: rgba(200,200,200,0.6);
+    line-height: 1.6;
+    margin-top: 0.6rem;
+    text-align: right;
+    display: none;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    padding-top: 0.55rem;
+  }
+  .perfume-card:hover .perfume-desc,
+  .perfume-card.selected .perfume-desc {
+    display: block;
+  }
+
   .selection-status {
     text-align: center;
     padding: 1.5rem;
@@ -2680,23 +2704,23 @@ body.female-theme .lines-women {
 
 <script>
 const perfumesMen = [
-  { id: 1, icon: '🌹', name: 'ورد طائف', note: 'زهري • شرقي' },
-  { id: 2, icon: '🌙', name: 'عود الليل', note: 'دخاني • غني' },
-  { id: 3, icon: '🌊', name: 'نسيم البحر', note: 'مائي • منعش' },
-  { id: 4, icon: '🍋', name: 'حمضيات الصباح', note: 'حمضي • منعش' },
-  { id: 5, icon: '🌿', name: 'خشب السدر', note: 'خشبي • دافئ' },
-  { id: 6, icon: '🫚', name: 'المسك الأبيض', note: 'مسكي • ناعم' },
-  { id: 7, icon: '✨', name: 'العنبر الذهبي', note: 'عنبري • فاخر' },
+  { id: 1, icon: '🌊', img: '8.png',  name: 'YSL MYSLF',            brand: 'Yves Saint Laurent', note: 'خشبي • حمضي',    description: 'جيل جديد من الحرية والثقة. يفتح بحمضيات برغموت إيطالية ساطعة، ثم ينتقل إلى قلب من اللافندر والزعتر البري، ليرسو على خشب الأرز الدافئ والفيتيفر. عطر لرجل يصنع قواعده بنفسه.' },
+  { id: 2, icon: '💙', img: '9.png',  name: 'Versace Dylan Blue',    brand: 'Versace',            note: 'مائي • خشبي',    description: 'أزرق كعمق البحر الأبيض المتوسط. يبدأ بانفجار من الجريب فروت والخيار المنعش، يتوسطه لافندر وحكيم، وينتهي بمسك أبيض وخشب جايك راسخ. حضور قوي لا يمر دون أن يُلاحَظ.' },
+  { id: 3, icon: '💎', img: '10.png', name: 'Bleu de Chanel',        brand: 'Chanel',             note: 'خشبي • معدني',   description: 'الكلاسيكية في أرقى تجلياتها. برغموت وليمون يفتحان العطر بنقاء ساطع، يتعمق نحو قلب من الزنجبيل والجاسمين، قبل أن يرتاح على خشب الصندل والباتشولي الرصين.' },
+  { id: 4, icon: '🏜️', img: '11.png', name: 'Dior Sauvage',          brand: 'Christian Dior',     note: 'خشبي • توابلي',  description: 'الوحشي الراقي — الأكثر مبيعاً في العالم لسبب وجيه. فلفل كالابريزي يندفع بجرأة، يلتقي بلافندر ملكي، ثم يغوص في عمق أميرجريس وخشب الصندل. وجود يملأ الغرفة قبل أن تدخلها.' },
+  { id: 5, icon: '🔥', img: '12.png', name: 'Stronger With You',     brand: 'Emporio Armani',     note: 'حلو • خشبي',     description: 'قوة ودفء في آنٍ واحد. يفتح بكاردامون وفلفل وردي جريء، ينعّمه قلب من الحكيم والخزامى، ثم يستقر على فانيليا دافئة وخشب الكشمير. عطر يجمع بين قوة الرجل ونعومته.' },
+  { id: 6, icon: '🧂', img: '13.png', name: 'Le Sel d\'Issey',       brand: 'Issey Miyake',       note: 'مائي • ملحي',    description: 'كأن المحيط احتُجز في زجاجة. ملوحة البحر تتصاعد مع نفَس أوزوني نقي، تُوازنها لمسات من الخشب الأبيض والمسك المائي الشفاف. عطر مختلف تماماً — للرجل الذي يبحث عن الجديد.' },
+  { id: 7, icon: '🌊', img: '14.png', name: 'Acqua di Giò',          brand: 'Giorgio Armani',     note: 'مائي • منعش',    description: 'الأيقونة التي اختصرت عطور البحر في حقبة كاملة. حمضيات سيسيلية تُطلق شرارة البداية، يحملها قلب مائي وأوزوني مع الروزماري، وترسو على قاعدة راتنجية وخشبية دافئة. لا تحتاج مناسبة خاصة لترتديه.' },
 ];
 
 const perfumeWomen = [
-  { id: 101, icon: '🌸', name: 'زهر الربيع', note: 'زهري • ناعم' },
-  { id: 102, icon: '🍓', name: 'حلوى الفراولة', note: 'فواكه • حلو' },
-  { id: 103, icon: '🌺', name: 'ياسمين الليل', note: 'زهري • رومانسي' },
-  { id: 104, icon: '🍑', name: 'نسيم الخوخ', note: 'فواكه • منعش' },
-  { id: 105, icon: '🌷', name: 'وردة باريس', note: 'زهري • أنيق' },
-  { id: 106, icon: '🍦', name: 'فانيلا كريمي', note: 'حلو • دافئ' },
-  { id: 107, icon: '💐', name: 'باقة الربيع', note: 'زهري • خفيف' },
+  { id: 101, icon: '💐', img: '1.png', name: 'Narciso Rodriguez',     brand: 'Narciso Rodriguez',     note: 'مسكي • زهري',    description: 'بساطة تخفي عمقاً استثنائياً. مسك أبيض ناعم يلتف حول ورد وياسمين شفاف، يقوم على قاعدة خشب الصندل والباتشولي الرصين. عطر يلتصق بالجلد ويبقى ساعات — هادئ بالخارج، فاتن بالداخل.' },
+  { id: 102, icon: '✨', img: '2.png', name: 'Gucci Bloom',           brand: 'Gucci',                  note: 'زهري • طبيعي',   description: 'حديقة زهور بيضاء في قلب روما. ياسمين هندي فوري يتصاعد مع زهر القصب وتيوبروز غني ثمين، كل شيء طبيعي وحيّ وبلا تزييف. عطر يشعرك أنك تمشين وسط حديقة سرية.' },
+  { id: 103, icon: '🌹', img: '3.png', name: 'My Way',                brand: 'Giorgio Armani',         note: 'زهري • خشبي',    description: 'لحظات حقيقية من أماكن حقيقية. ياسمين هندي يلتقي بالتيونروز من المكسيك وخشب الصندل من أستراليا. عطر يحكي قصة امرأة تعيش حياتها بشروطها — منفتحة، واثقة، ومتجذّرة.' },
+  { id: 104, icon: '💎', img: '4.png', name: 'Bright Crystal',        brand: 'Versace',                note: 'زهري • فاكهي',   description: 'شفافية وبريق كالكريستال. يومضُ بالرمان والمنتون والبيونيا المنعش، يُسكّنه خلاصة اللوتس والماغنوليا، ويختم بمسك الأمبر الناعم. أنثوي، خفيف، ومناسب لكل لحظة ومناسبة.' },
+  { id: 105, icon: '🔑', img: '5.png', name: 'Libre',                 brand: 'Yves Saint Laurent',     note: 'زهري • خشبي',    description: 'تمرد بأناقة — روح YSL في أجمل تجلياتها. اللافندر بشكل لم تشمّيه من قبل يتلاشى في قلب من الياسمين الغراندفلور، ليستقر على فانيليا ناعمة ومسك أبيض محرّر. لمن تعيش بحرية حقيقية.' },
+  { id: 106, icon: '🌸', img: '6.png', name: 'Mancera Roses Vanille', brand: 'Mancera',                note: 'زهري • حلو',     description: 'أسطورة العطور الفرنسية المستقلة. ورد دمشقي غني يندمج مع فانيليا بوربون فاخرة وخشب الصندل الأبيض، مع لمسة توت أحمر تُضيء الخليط. عطر يدوم من صباحكِ حتى نهاية ليلك.' },
+  { id: 107, icon: '💛', img: '7.png', name: 'Devotion',              brand: 'Dolce & Gabbana',        note: 'زهري • حلو',     description: 'ترنيمة حب إيطالية. يبدأ بالبيونيا والنيرولي الأنيق، يتعمق بقلب من الورد والياسمين الإيطالي، وينتهي بفانيليا أصيلة وخشب الأرز الدافئ. عطر يشعل مشاعر الإخلاص والأنوثة الحقيقية.' },
 ];
 
 let gender = null;
@@ -3008,14 +3032,19 @@ function renderPerfumes() {
     const selectedInstances = selected.filter(s => s.perfumeId === p.id);
     const isSelected = selectedInstances.length > 0;
     const isRecommended = recommendedIds.includes(p.id);
+    const iconHtml = p.img
+      ? `<img src="${p.img}" alt="${p.name}" style="width:70px;height:70px;object-fit:contain;margin:0 auto 0.8rem;display:block;border-radius:8px;">`
+      : `<span class="perfume-icon">${p.icon}</span>`;
     return `
     <div class="perfume-card ${isSelected ? 'selected' : ''} ${isRecommended ? 'recommended' : ''} ${selected.length >= 3 && !isSelected ? 'disabled' : ''}"
          style="animation-delay:${idx * 0.05}s"
          onclick="${selected.length < 3 ? `togglePerfume(${p.id})` : ''}" id="card-${p.id}">
       ${isSelected ? `<button class="close-btn" onclick="event.stopPropagation(); removePerfume(${selectedInstances[selectedInstances.length - 1].uniqueId})">×</button>` : ''}
-      <span class="perfume-icon">${p.icon}</span>
+      ${iconHtml}
       <div class="perfume-name">${p.name}</div>
+      ${p.brand ? `<div class="perfume-brand">${p.brand}</div>` : ''}
       <div class="perfume-note">${p.note}</div>
+      ${p.description ? `<div class="perfume-desc">${p.description}</div>` : ''}
       ${isSelected ? `<div class="selection-count">${selectedInstances.length}</div>` : ''}
     </div>
   `;
@@ -3490,22 +3519,22 @@ ${perfumeList}
 // ══════════════════════════════════════════════════════
 
 const cpMenPerfumes = [
-  { id: 'cm1', icon: '🌹', name: 'ورد طائف',        note: 'زهري • شرقي' },
-  { id: 'cm2', icon: '🌙', name: 'عود الليل',        note: 'دخاني • غني' },
-  { id: 'cm3', icon: '🌊', name: 'نسيم البحر',       note: 'مائي • منعش' },
-  { id: 'cm4', icon: '🍋', name: 'حمضيات الصباح',   note: 'حمضي • منعش' },
-  { id: 'cm5', icon: '🌿', name: 'خشب السدر',        note: 'خشبي • دافئ' },
-  { id: 'cm6', icon: '🫚', name: 'المسك الأبيض',     note: 'مسكي • ناعم' },
-  { id: 'cm7', icon: '✨', name: 'العنبر الذهبي',    note: 'عنبري • فاخر' },
+  { id: 'cm1', icon: '✨', img: '8.png',  name: 'YSL MYSLF',          brand: 'Yves Saint Laurent', note: 'عنبري • فاخر',   description: 'فخامة عنبرية تحمل توقيع YSL الأسطوري. عنبر دافئ غني يتصاعد مع خشب الأرز والفيتيفر الراسخ، يُلطّفه لافندر ناعم وزعتر بري. عطر لرجل يعرف قيمته ويتركك تعرفها أيضاً.' },
+  { id: 'cm2', icon: '💙', img: '9.png',  name: 'Versace Dylan Blue',  brand: 'Versace',            note: 'مسكي • ناعم',   description: 'قوة تُغلَّف بنعومة استثنائية. مسك أبيض ناعم يسري تحت طبقة من اللافندر والجريب فروت المنعش، يستقر على خشب الجايك والأمبر الدافئ. عطر يتركك تُلاحَظ دون أن تصرخ.' },
+  { id: 'cm3', icon: '💎', img: '10.png', name: 'Bleu de Chanel',      brand: 'Chanel',             note: 'خشبي • دافئ',   description: 'دفء خشبي يسكن تحت طبقة من الأناقة الفرنسية. برغموت وليمون يفتحان الطريق، يتعمق العطر نحو قلب من الزنجبيل والجاسمين، ليستقر على صندل دافئ وباتشولي راسخ يبقى ساعات.' },
+  { id: 'cm4', icon: '🏜️', img: '11.png', name: 'Dior Sauvage',        brand: 'Christian Dior',     note: 'حمضي • منعش',   description: 'انفجار حمضي وحشي يفتح الحواس فوراً. برغموت كالابريزي ينطلق بجرأة منعشة، تحمله لافندر ملكي وفلفل جريء، قبل أن يرسو على أميرجريس وصندل بارد. الأكثر مبيعاً في العالم لسبب.' },
+  { id: 'cm5', icon: '🌊', img: '12.png', name: 'Stronger With You',   brand: 'Emporio Armani',     note: 'مائي • منعش',   description: 'انتعاش مائي يمنحك طاقة فورية. يُطلق بنفَس أوزوني مائي بارد مع حمضيات خفيفة، يتوسطه لافندر وكاردامون منعش، ليستقر على مسك نظيف وخشب خفيف. للرجل الحيوي في كل لحظة.' },
+  { id: 'cm6', icon: '🧂', img: '13.png', name: "Le Sel d'Issey",      brand: 'Issey Miyake',       note: 'دخاني • غني',   description: 'عمق دخاني نادر يفاجئك في كل طبقة. ملوحة بحرية غنية تتصاعد مع خشب مدخّن وراتنج داكن، يُحيطها مسك ثقيل راسخ. عطر شجاع لمن يرفض أن يكون عادياً.' },
+  { id: 'cm7', icon: '🌹', img: '14.png', name: 'Acqua di Giò',        brand: 'Giorgio Armani',     note: 'زهري • شرقي',   description: 'الأيقونة التي أخذت منعومة البحر نحو عمق شرقي. زهور بحرية وياسمين شفاف يتصاعدان فوق قاعدة من الراتنج الدافئ والكهرمان الشرقي. كلاسيكي بلا نهاية — يُعاد اكتشافه في كل مرة.' },
 ];
 const cpWomenPerfumes = [
-  { id: 'cw1', icon: '🌸', name: 'زهر الربيع',      note: 'زهري • ناعم' },
-  { id: 'cw2', icon: '🍓', name: 'حلوى الفراولة',   note: 'فواكه • حلو' },
-  { id: 'cw3', icon: '🌺', name: 'ياسمين الليل',    note: 'زهري • رومانسي' },
-  { id: 'cw4', icon: '🍑', name: 'نسيم الخوخ',      note: 'فواكه • منعش' },
-  { id: 'cw5', icon: '🌷', name: 'وردة باريس',       note: 'زهري • أنيق' },
-  { id: 'cw6', icon: '🍦', name: 'فانيلا كريمي',    note: 'حلو • دافئ' },
-  { id: 'cw7', icon: '💐', name: 'باقة الربيع',     note: 'زهري • خفيف' },
+  { id: 'cw1', icon: '💐', img: '1.png', name: 'Narciso Rodriguez',     brand: 'Narciso Rodriguez',  note: 'زهري • خفيف',   description: 'خفة تخفي سحراً لا يُنسى. ورد وياسمين شفاف يتصاعدان بنعومة استثنائية، يحملهما مسك أبيض هوائي يلتصق بالجلد ويبقى ساعات. عطر كأنه جزء منكِ — غير مرئي لكن لا يُنسى.' },
+  { id: 'cw2', icon: '✨', img: '2.png', name: 'Gucci Bloom',           brand: 'Gucci',              note: 'حلو • دافئ',    description: 'دفء زهري يلفّك كعناق ناعم. ياسمين هندي وتيوبروز يتصاعدان بحلاوة طبيعية دافئة، يُسكّنهما زهر القصب العميق. عطر كالحضن الناعم — يشعرك بالقرب والدفء في كل وقت.' },
+  { id: 'cw3', icon: '🌹', img: '3.png', name: 'My Way',               brand: 'Giorgio Armani',     note: 'زهري • أنيق',   description: 'أناقة من كل زاوية في العالم. ياسمين هندي فاخر يلتقي بتيوبروز مكسيكي، يستقر على صندل أسترالي راقٍ. عطر يحكي قصة امرأة واثقة تعرف قيمتها — في كل مكان وكل مناسبة.' },
+  { id: 'cw4', icon: '💎', img: '4.png', name: 'Bright Crystal',       brand: 'Versace',            note: 'فواكه • منعش',  description: 'شفافية وبريق كالكريستال في صباح منعش. يومضُ برمان ومنتون طازجين مع بيونيا فاكهية، يُلطّفها لوتس وماغنوليا، ويختم بمسك أمبر خفيف. أنثوي ومنعش لكل يوم ولكل مكان.' },
+  { id: 'cw5', icon: '🔑', img: '5.png', name: 'Libre',               brand: 'Yves Saint Laurent', note: 'زهري • رومانسي', description: 'تمرد رومانسي بأناقة فرنسية. لافندر حريري يلتقي بياسمين الغراندفلور العاطفي، ليستقر على فانيليا ومسك أبيض دافئ يبقى على الجلد ساعات. للمرأة التي تُحب بقوة وتعيش بحرية.' },
+  { id: 'cw6', icon: '🌸', img: '6.png', name: 'Roses Vanille',       brand: 'Mancera',            note: 'فواكه • حلو',   description: 'أسطورة العطور الفرنسية المستقلة. توت أحمر وفواكه ناضجة تُضيء البداية، تلتقي بورد دمشقي وفانيليا بوربون فاخرة. حلاوة راقية تدوم من الصباح حتى آخر الليل دون أن تثقل.' },
+  { id: 'cw7', icon: '💛', img: '7.png', name: 'Devotion',            brand: 'Dolce & Gabbana',    note: 'زهري • ناعم',   description: 'ترنيمة حب إيطالية بنعومة لا تُقاوَم. يفتح بالبيونيا والنيرولي الحريري، يتعمق بقلب من الورد والياسمين الإيطالي، ويستقر على فانيليا أصيلة ناعمة كالحرير. عطر يشعرك بأنوثة هادئة وراقية.' },
 ];
 
 let cpManSelected = [];   // up to 2 IDs
@@ -3530,9 +3559,13 @@ function cpRenderGrid(containerId, perfumes, selectedArr, type) {
 
     card.innerHTML = `
       ${removeBtn}
-      <span class="cp-icon">${p.icon}</span>
+      ${p.img
+        ? `<img src="${p.img}" alt="${p.name}" style="width:55px;height:55px;object-fit:contain;display:block;margin:0 auto 0.4rem;border-radius:6px;">`
+        : `<span class="cp-icon">${p.icon}</span>`}
       <div class="cp-name">${p.name}</div>
+      ${p.brand ? `<div class="cp-brand">${p.brand}</div>` : ''}
       <div class="cp-note">${p.note}</div>
+      ${p.description ? `<div class="cp-desc">${p.description}</div>` : ''}
       <span class="cp-badge">${count === 2 ? '٢' : '✓'}</span>
     `;
 
@@ -3962,14 +3995,16 @@ function openModeGate() {
   const el = document.querySelector('.' + cls);
   if (el) el.addEventListener('animationend', () => el.classList.add('anim-done'), { once: true });
 });
-// Mode gate removed — load directly in individual mode
-document.body.style.overflow = '';
+// Show mode gate on load so user picks Individual or Couples
 hideSections(couplesSectionIds);
-showSections(individualSections);
-if (document.querySelector('.hero')) document.querySelector('.hero').style.display = '';
-if (document.querySelector('.gender-selector')) document.querySelector('.gender-selector').style.display = 'flex';
+hideSections(individualSections);
+if (document.querySelector('.hero')) document.querySelector('.hero').style.display = 'none';
+if (document.querySelector('.gender-selector')) document.querySelector('.gender-selector').style.display = 'none';
 const _switchBtn = document.getElementById('switchModeBtn');
-if (_switchBtn) _switchBtn.style.display = 'inline-block';
+if (_switchBtn) _switchBtn.style.display = 'none';
+const _gate = document.getElementById('modeGate');
+if (_gate) { _gate.style.display = 'flex'; _gate.style.opacity = '1'; }
+document.body.style.overflow = 'hidden';
 
 document.getElementById('priceDisplay').textContent = '٢٩,٧٥٠ دينار';
 
