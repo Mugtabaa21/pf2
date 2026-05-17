@@ -3475,9 +3475,9 @@ function handleSubmit() {
   }).join('\n');
 
   const genderIcon = gender === 'female' ? '👩' : '👨';
-  const wazeLink = buyerCoords
-    ? `https://waze.com/ul?ll=${buyerCoords.lat},${buyerCoords.lng}&navigate=yes`
-    : null;
+  const lat = buyerCoords ? buyerCoords.lat : null;
+  const lng = buyerCoords ? buyerCoords.lng : null;
+  const wazeLink = lat ? 'https://waze.com/ul?ll=' + lat + ',' + lng + '&navigate=yes' : 'لم يتم تحديده';
 
   let message =
 `✦ *طلب جديد*
@@ -3492,9 +3492,7 @@ ${perfumeList}
 💰 ٢٩,٧٥٠ دينار
 
 📍 الموقع
-`;
-  if (wazeLink) message += wazeLink;
-  else message += 'لم يتم تحديده';
+${wazeLink}`;
   
   // WhatsApp number to send to (change this to your business number)
   const whatsappNumber = '+9647717349858'; // Change this to your WhatsApp number
@@ -3824,9 +3822,9 @@ function cpHandleSubmit() {
     return `${p.name}`;
   }).join('\n');
 
-  const wazeLink = cpCoords
-    ? `https://waze.com/ul?ll=${cpCoords.lat},${cpCoords.lng}&navigate=yes`
-    : 'لم يتم تحديده';
+  const cpLat = cpCoords ? cpCoords.lat : null;
+  const cpLng = cpCoords ? cpCoords.lng : null;
+  const wazeLink = cpLat ? 'https://waze.com/ul?ll=' + cpLat + ',' + cpLng + '&navigate=yes' : 'لم يتم تحديده';
 
   const message =
 `✦ *طلب اشتراك أزواج*
