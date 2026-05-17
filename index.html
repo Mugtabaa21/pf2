@@ -571,18 +571,21 @@
   }
   .perfume-card .selection-count {
     position: absolute;
-    bottom: 6px;
-    right: 6px;
-    width: 24px;
-    height: 24px;
+    bottom: -12px;
+    right: -12px;
+    width: 26px;
+    height: 26px;
     background: var(--gold);
-    color: var(--dark);
+    color: #fff;
     border-radius: 50%;
     font-size: 0.8rem;
     font-weight: bold;
     display: flex;
     align-items: center;
     justify-content: center;
+    border: 2px solid var(--dark2);
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
   }
   .perfume-card.disabled {
     opacity: 0.25;
@@ -2188,9 +2191,12 @@ body.female-theme .lines-women {
     .subscribe-section { padding: 3rem 1.2rem; }
 
     /* Perfume grid */
-    .perfumes-grid { grid-template-columns: repeat(3, 1fr); gap: 0.6rem; }
+    .perfumes-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
     .perfume-card {
-    will-change: transform; padding: 1rem 0.5rem; }
+    will-change: transform; padding: 1.2rem 0.8rem; }
+    .perfumes-grid .perfume-card:last-child:nth-child(2n+1) { grid-column: 1 / -1; max-width: 50%; margin: 0 auto; }
+    .perfumes-grid .perfume-card:last-child:nth-child(3n+1) { grid-column: unset; max-width: unset; margin: unset; }
+    .perfumes-grid .perfume-card:last-child:nth-child(3n+2) { grid-column: unset; }
     .perfume-icon { font-size: 1.8rem; }
     .perfume-name { font-size: 0.75rem; }
     .perfume-note { font-size: 0.62rem; }
@@ -3470,7 +3476,7 @@ function handleSubmit() {
 
   const genderIcon = gender === 'female' ? '👩' : '👨';
   const wazeLink = buyerCoords
-    ? `https://waze.com/ul?ll=${buyerCoords.lat},${buyerCoords.lng}&navigate=yes`
+    ? `waze://?ll=${buyerCoords.lat},${buyerCoords.lng}&navigate=yes`
     : null;
 
   let message =
@@ -3819,7 +3825,7 @@ function cpHandleSubmit() {
   }).join('\n');
 
   const wazeLink = cpCoords
-    ? `https://waze.com/ul?ll=${cpCoords.lat},${cpCoords.lng}&navigate=yes`
+    ? `waze://?ll=${cpCoords.lat},${cpCoords.lng}&navigate=yes`
     : 'لم يتم تحديده';
 
   const message =
