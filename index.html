@@ -3476,7 +3476,7 @@ function handleSubmit() {
 
   const genderIcon = gender === 'female' ? '👩' : '👨';
   const wazeLink = buyerCoords
-    ? `https://ul.waze.com/ul?ll=${buyerCoords.lat.toFixed(6)},${buyerCoords.lng.toFixed(6)}&navigate=yes`
+    ? `https://waze.com/ul?ll=${buyerCoords.lat},${buyerCoords.lng}&navigate=yes`
     : null;
 
   let message =
@@ -3825,7 +3825,7 @@ function cpHandleSubmit() {
   }).join('\n');
 
   const wazeLink = cpCoords
-    ? `https://ul.waze.com/ul?ll=${cpCoords.lat.toFixed(6)},${cpCoords.lng.toFixed(6)}&navigate=yes`
+    ? `https://waze.com/ul?ll=${cpCoords.lat},${cpCoords.lng}&navigate=yes`
     : 'لم يتم تحديده';
 
   const message =
